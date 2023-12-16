@@ -6,10 +6,13 @@ groceries = pd.read_csv('/Users/jamesswank/Downloads/Grocery_S_ExportTable1.csv'
 
 
 block_geo_data = gpd.read_file('/Users/jamesswank/Python_Projects/CensusBlocks/assets/blocks4.json')
+# print(block_geo_data)
+# print(block_geo_data.columns)
+# geo_arap = block_geo_data[block_geo_data['COUNTYFP20'] == "005"]
 block_geo_data['GEOID'] = block_geo_data['GEOID'].astype(int)
 
 
-print(block_geo_data)
+# print(block_geo_data)
 
 
 def get_grocery_stores():
@@ -38,7 +41,7 @@ def get_block_data():
     # block_df1['Total'] = block_df1['Total'].astype(int)
     
     df = block_geo_data.merge(block_df1, on="GEOID")
-    print(df)
+    # print(df)
     
 
     return df

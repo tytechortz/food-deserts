@@ -5,17 +5,17 @@ import dash_bootstrap_components as dbc
 from datetime import date
 
 
-
+from figures_utilities import (
+    get_figure
+)
 
 from utilities import (
     get_grocery_stores,
     get_block_data
 )
 
-df = get_grocery_stores()
 
-pop = get_block_data()
-print(pop)
+
 
 
 app = Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.DARKLY])
@@ -64,9 +64,27 @@ app.layout = dbc.Container([
             ),
         ], width=4),
     ]),
-
+    dbc.Row([
+        html.Div([
+            dbc.Card(
+                dcc.Graph(id='fd-map', figure=blank_fig(500))),
+        ]),
+    ]),
 ])
 
+@app.callback(
+    Output("fd-map", "figure"),
+    Input("stores", "value"))
+def update_Choropleth(stores):
+    
+    df = get_grocery_stores()
+    print(df)
+        
+    geo_data = get_block_data()
+    fig = get_figure(df, geo_data)
+
+
+    return fig
 
 
 if __name__ == "__main__":
