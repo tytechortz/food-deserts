@@ -3,6 +3,7 @@ import numpy as np
 from dash import Dash, html, dcc, Input, Output, State, ctx, dash_table
 import dash_bootstrap_components as dbc
 from datetime import date
+import geopandas as gpd
 
 
 from figures_utilities import (
@@ -79,10 +80,33 @@ def update_Choropleth(stores):
     
     df = get_grocery_stores()
     df = df[df['Store'].isin(stores)]
-    print(df)
-        
+    # print(df.index)
+    gdf = gpd.GeoDataFrame(
+        df, geometry=gpd.points_from_xy(df.X, df.Y), crs="EPSG:4326" 
+    )
+    
     geo_data = get_block_data()
-    fig = get_figure(df, geo_data)
+    geo_data = geo_data.set_crs("EPSG:4326")
+    # gwb = gpd.sjoin_nearest(df, geo_data, distance_col="distances")
+    gdf['geometry'] = gdf.geometry.buffer(.01)
+
+    # print(gwb.distances)
+    gwb = gpd.overlay(gdf, geo_data, how="intersection")
+    print(gwb)   
+    
+
+
+
+
+
+
+    fig = get_figure(df, gwb)
+
+
+
+
+
+
 
 
     return fig

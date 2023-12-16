@@ -5,26 +5,28 @@ import geopandas as gpd
 
 
 
-def get_Choropleth(df, geo_data, marker_opacity, marker_line_width, marker_line_color, fig=None):
-    print(geo_data)
+def get_Choropleth(df, gwb, marker_opacity, marker_line_width, marker_line_color, fig=None):
+    # print(gwb['distances'])
+    print(gwb.columns)
     
     if fig is None:
         fig = go.Figure(
             
         )
 
-    # fig.add_trace(
-    #     go.Choroplethmapbox(
-    #         geojson=eval(geo_data['geometry'].to_json()),
-    #         locations=df.index,
-    #         z=df['Total'],
-    #         marker_opacity = marker_opacity,
-    #         marker_line_width = marker_line_width,
-    #         marker_line_color = marker_line_color,
-    #         customdata=df["GEOID"],
-    #         hoverinfo='z'
-    #     )
-    # )
+    fig.add_trace(
+        go.Choroplethmapbox(
+            geojson=eval(gwb['geometry'].to_json()),
+            # geojson=gwb,
+            locations=gwb.index,
+            z=gwb['ALAND20'],
+            marker_opacity = marker_opacity,
+            marker_line_width = marker_line_width,
+            marker_line_color = marker_line_color,
+            # customdata=gwb["GEOID20"],
+            hoverinfo='z'
+        )
+    )
     
 
     fig.add_trace(
@@ -56,10 +58,10 @@ def get_Choropleth(df, geo_data, marker_opacity, marker_line_width, marker_line_
 #     return fig
 
 
-def get_figure(df, geo_data):
+def get_figure(df, gwb):
 
     # print(df)
-    fig = get_Choropleth(df, geo_data, marker_opacity=1,
+    fig = get_Choropleth(df, gwb, marker_opacity=1,
                          marker_line_width=1, marker_line_color='#6666cc')
     
     
