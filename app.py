@@ -8,10 +8,14 @@ from datetime import date
 
 
 from utilities import (
-    get_grocery_stores
+    get_grocery_stores,
+    get_block_data
 )
 
 df = get_grocery_stores()
+
+pop = get_block_data()
+print(pop)
 
 
 app = Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.DARKLY])
@@ -47,6 +51,20 @@ def blank_fig(height):
 
 app.layout = dbc.Container([
     header,
+    dbc.Row([
+        dbc.Col([
+            dcc.Checklist(
+                id="stores",
+                options=[
+                    {"label": i, "value": i}
+                    for i in ["Safeway", "King Sooper", "Sprouts", "Walmart SC"]
+                ],
+                value=["Safeway"],
+                inline=True
+            ),
+        ], width=4),
+    ]),
+
 ])
 
 
