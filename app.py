@@ -78,6 +78,7 @@ app.layout = dbc.Container([
 def update_Choropleth(stores):
     
     df = get_grocery_stores()
+    df = df[df['Store'].isin(stores)]
     print(df)
         
     geo_data = get_block_data()
