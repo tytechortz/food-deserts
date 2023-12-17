@@ -83,15 +83,20 @@ def update_Choropleth(stores):
     # print(df.index)
     gdf = gpd.GeoDataFrame(
         df, geometry=gpd.points_from_xy(df.X, df.Y), crs="EPSG:4326" 
-    )
+)
     
+    gdf['geometry'] = gdf.geometry.to_crs("epsg:26913")
+    print(gdf)
     geo_data = get_block_data()
-    geo_data = geo_data.set_crs("EPSG:4326")
+    geo_data = geo_data.to_crs("EPSG:26913")
+    # print(geo_data)
     # gwb = gpd.sjoin_nearest(df, geo_data, distance_col="distances")
-    gdf['geometry'] = gdf.geometry.buffer(.01)
-
+    # gdf = gdf.to_crs({'init': 'epsg:32750'})
+    gdf['geometry'] = gdf.geometry.buffer(1600)
+    # print(gdf)
     # print(gwb.distances)
-    gwb = gpd.overlay(gdf, geo_data, how="intersection")
+    gwb = gpd.overlay(geo_data, gdf, how="difference")
+    gwb = gwb.to_crs("epsg:4326")
     print(gwb)   
     
 

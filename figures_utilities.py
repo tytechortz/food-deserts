@@ -4,10 +4,13 @@ import numpy as np
 import geopandas as gpd
 
 
+Arap_outline = gpd.read_file('/Users/jamesswank/Python_Projects/Situational_Awareness_v2/us-county-boundaries')
+
+
 
 def get_Choropleth(df, gwb, marker_opacity, marker_line_width, marker_line_color, fig=None):
     # print(gwb['distances'])
-    print(gwb.columns)
+    # print(gwb.columns)
     
     if fig is None:
         fig = go.Figure(
@@ -64,10 +67,18 @@ def get_figure(df, gwb):
     fig = get_Choropleth(df, gwb, marker_opacity=1,
                          marker_line_width=1, marker_line_color='#6666cc')
     
+    layer = [
+            {
+                "source": Arap_outline["geometry"].__geo_interface__,
+                "type": "line",
+                "color": "red"
+            }
+        ]
+    
     
     fig.update_layout(mapbox_style="carto-positron", 
                             mapbox_zoom=10.4,
-                            # mapbox_layers=layer,
+                            mapbox_layers=layer,
                             mapbox_center={"lat": 39.65, "lon": -104.8},
                             margin={"r":0,"t":0,"l":0,"b":0},
                             autosize=True,
