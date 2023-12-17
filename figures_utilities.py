@@ -8,9 +8,10 @@ Arap_outline = gpd.read_file('/Users/jamesswank/Python_Projects/Situational_Awar
 
 
 
-def get_Choropleth(df, gwb, marker_opacity, marker_line_width, marker_line_color, fig=None):
-    # print(gwb['distances'])
-    # print(gwb.columns)
+def get_Choropleth(df, gd, marker_opacity, marker_line_width, marker_line_color, fig=None):
+    print(gd['geometry'])
+    print(gd.columns)
+    print(gd)
     
     if fig is None:
         fig = go.Figure(
@@ -19,10 +20,10 @@ def get_Choropleth(df, gwb, marker_opacity, marker_line_width, marker_line_color
 
     fig.add_trace(
         go.Choroplethmapbox(
-            geojson=eval(gwb['geometry'].to_json()),
-            # geojson=gwb,
-            locations=gwb.index,
-            z=gwb['ALAND20'],
+            geojson=eval(gd['geometry'].to_json()),
+            # geojson=gd,
+            locations=gd.index,
+            z=gd['AWATER20'],
             marker_opacity = marker_opacity,
             marker_line_width = marker_line_width,
             marker_line_color = marker_line_color,
@@ -61,10 +62,10 @@ def get_Choropleth(df, gwb, marker_opacity, marker_line_width, marker_line_color
 #     return fig
 
 
-def get_figure(df, gwb):
+def get_figure(df, gd):
 
     # print(df)
-    fig = get_Choropleth(df, gwb, marker_opacity=1,
+    fig = get_Choropleth(df, gd, marker_opacity=1,
                          marker_line_width=1, marker_line_color='#6666cc')
     
     layer = [
