@@ -28,7 +28,8 @@ def get_Choropleth(df, gd, marker_opacity, marker_line_width, marker_line_color,
             marker_line_width = marker_line_width,
             marker_line_color = marker_line_color,
             # customdata=gwb["GEOID20"],
-            hoverinfo='z'
+            hoverinfo='z',
+            colorscale='fall',
         )
     )
     

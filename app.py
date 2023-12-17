@@ -64,6 +64,23 @@ app.layout = dbc.Container([
                 inline=True
             ),
         ], width=4),
+        dbc.Col([
+            dcc.Input(
+                id='buffer',
+                type='number',
+                value=.5,
+                step=.1,
+                placeholder='Input radius in km'
+            )
+        #     dcc.Slider(0, 2, value=1.6,
+        #         marks={
+        #             0: {'label': '0', 'style': {'color': 'white'}},
+        #             1.6: {'label': '1.6', 'style': {'color': 'white'}},
+        #             2: {'label': '2', 'style': {'color': 'white'}},
+        #         },
+        #         id = 'radius',
+        #     ),
+        ], width=2),
     ]),
     dbc.Row([
         html.Div([
@@ -75,9 +92,11 @@ app.layout = dbc.Container([
 
 @app.callback(
     Output("fd-map", "figure"),
-    Input("stores", "value"))
-def update_Choropleth(stores):
-    
+    Input("stores", "value"),
+    Input("buffer", 'value'))
+def update_Choropleth(stores, radius):
+    buffer = radius * 1000
+
     df = get_grocery_stores()
     df = df[df['Store'].isin(stores)]
     # print(df.index)
@@ -92,7 +111,7 @@ def update_Choropleth(stores):
     # print(geo_data.columns)
     # gwb = gpd.sjoin_nearest(df, geo_data, distance_col="distances")
     # gdf = gdf.to_crs({'init': 'epsg:32750'})
-    gdf['geometry'] = gdf.geometry.buffer(1600)
+    gdf['geometry'] = gdf.geometry.buffer(buffer)
     # print(gdf)
     # print(gwb.distances)
     gwb = gpd.overlay(geo_data, gdf, how="difference")
