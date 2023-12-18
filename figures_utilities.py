@@ -23,13 +23,15 @@ def get_Choropleth(df, gd, marker_opacity, marker_line_width, marker_line_color,
             geojson=eval(gd['geometry'].to_json()),
             # geojson=gd,
             locations=gd.index,
-            z=gd['AWATER20'],
+            z=gd['Total'],
             marker_opacity = marker_opacity,
             marker_line_width = marker_line_width,
             marker_line_color = marker_line_color,
             # customdata=gwb["GEOID20"],
             hoverinfo='z',
             colorscale='fall',
+            zmax=1000,
+            zmin=500
         )
     )
     
@@ -67,7 +69,7 @@ def get_figure(df, gd):
 
     # print(df)
     fig = get_Choropleth(df, gd, marker_opacity=1,
-                         marker_line_width=1, marker_line_color='#6666cc')
+                         marker_line_width=.1, marker_line_color='#6666cc')
     
     layer = [
             {

@@ -58,9 +58,9 @@ app.layout = dbc.Container([
                 id="stores",
                 options=[
                     {"label": i, "value": i}
-                    for i in ["Safeway", "King Sooper", "Sprouts", "Walmart SC", "Walmart NM", "Whole Foods", "Trader Joe's", "Target", "Save A Lot", "Sams", "Natural Grocers", "Costco" ]
+                    for i in ["Safeway", "King Sooper", "Sprouts", "Walmart SC", "Walmart NM", "Whole Foods", "Trader Joe's", "Target", "Save A Lot", "Sams", "Natural Grocers", "Costco", "Lowe's", "El Mercado De Colorado" ]
                 ],
-                value=["Safeway", "King Sooper", "Sprouts", "Walmart SC", "Walmart NM", "Whole Foods", "Trader Joe's", "Target", "Save A Lot", "Sams", "Natural Grocers", "Costco" ],
+                value=["Safeway", "King Sooper", "Sprouts", "Walmart SC", "Walmart NM", "Whole Foods", "Trader Joe's", "Target", "Save A Lot", "Sams", "Natural Grocers", "Costco", "Lowe's", "El Mercado De Colorado" ],
                 inline=True
             ),
         ], width=6),
@@ -102,7 +102,7 @@ def update_Choropleth(stores, radius):
     # print(df.index)
     gdf = gpd.GeoDataFrame(
         df, geometry=gpd.points_from_xy(df.X, df.Y), crs="EPSG:4326" 
-)
+    )
     
     gdf['geometry'] = gdf.geometry.to_crs("epsg:26913")
     # print(gdf)
