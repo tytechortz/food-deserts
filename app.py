@@ -58,12 +58,12 @@ app.layout = dbc.Container([
                 id="stores",
                 options=[
                     {"label": i, "value": i}
-                    for i in ["Safeway", "King Sooper", "Sprouts", "Walmart SC"]
+                    for i in ["Safeway", "King Sooper", "Sprouts", "Walmart SC", "Walmart NM", "Whole Foods", "Trader Joe's", "Target", "Save A Lot", "Sams", "Natural Grocers", "Costco" ]
                 ],
-                value=["Safeway"],
+                value=["Safeway", "King Sooper", "Sprouts", "Walmart SC", "Walmart NM", "Whole Foods", "Trader Joe's", "Target", "Save A Lot", "Sams", "Natural Grocers", "Costco" ],
                 inline=True
             ),
-        ], width=4),
+        ], width=6),
         dbc.Col([
             dcc.Input(
                 id='buffer',
