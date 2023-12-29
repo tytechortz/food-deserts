@@ -8,7 +8,7 @@ groceries = pd.read_csv('/Users/jamesswank/Downloads/Grocery_S_ExportTable1.csv'
 block_geo_data = gpd.read_file('/Users/jamesswank/Python_Projects/CensusBlocks/assets/blocks4.json')
 # print(block_geo_data.dtypes)
 
-print(block_geo_data['TRACTCE20'])
+# print(block_geo_data['TRACTCE20'])
 # print(block_geo_data['GEOID'])
 # print(block_geo_data.columns)
 # geo_arap = block_geo_data[block_geo_data['COUNTYFP20'] == "005"]
@@ -22,7 +22,7 @@ svi_data['TRACTCE20'] = svi_data['FIPS'].str[-6:]
 svi_data = svi_data[['TRACTCE20', 'E_TOTPOP', 'E_POV150']]
 svi_data['pct_pov'] = svi_data['E_POV150'] / svi_data['E_TOTPOP'] 
 # print(svi_data['FIPS'])
-print(svi_data)
+# print(svi_data)
 
 # print(block_geo_data)
 
@@ -53,9 +53,9 @@ def get_block_data():
     # block_df1['Total'] = block_df1['Total'].astype(int)
     
     df = block_geo_data.merge(block_df1, on="GEOID")
-    print(df)
+    # print(df)
     df2 = pd.merge(block_geo_data, svi_data, on="TRACTCE20")
-    print(df2)
+    # print(df2)
 
     return df2
 

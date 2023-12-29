@@ -80,7 +80,7 @@ app.layout = dbc.Container([
                     .5: {'label': '.5', 'style': {'color': 'white'}},
                     1: {'label': '1', 'style': {'color': 'white'}},
                 },
-                id = 'radius',
+                id = 'poverty',
             ),
         ], width=4),
     ]),
@@ -95,8 +95,9 @@ app.layout = dbc.Container([
 @app.callback(
     Output("fd-map", "figure"),
     Input("stores", "value"),
-    Input("buffer", 'value'))
-def update_Choropleth(stores, radius):
+    Input("buffer", "value"),
+    Input("poverty", "value"))
+def update_Choropleth(stores, radius, poverty):
     buffer = radius * 1000
 
     df = get_grocery_stores()
@@ -128,7 +129,8 @@ def update_Choropleth(stores, radius):
     # gd = gpd.GeoDataFrame(
     #     gd, geometry=gpd.points_from
     # )
-    # print(gd)
+    gd = gd[gd['pct_pov'] < poverty]
+    print(gd)
     
 
 
