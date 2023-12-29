@@ -58,9 +58,9 @@ app.layout = dbc.Container([
                 id="stores",
                 options=[
                     {"label": i, "value": i}
-                    for i in ["Safeway", "King Sooper", "Sprouts", "Walmart SC", "Walmart NM", "Whole Foods", "Trader Joe's", "Target", "Save A Lot", "Sams", "Natural Grocers", "Costco", "Lowe's", "El Mercado De Colorado" ]
+                    for i in ["Safeway", "King Sooper", "Sprouts", "Walmart SC", "Walmart NM", "Whole Foods", "Trader Joes", "Target", "Save A Lot", "Sams", "Natural Grocers", "Costco", "Lowes", "El Mercado De Colorado" ]
                 ],
-                value=["Safeway", "King Sooper", "Sprouts", "Walmart SC", "Walmart NM", "Whole Foods", "Trader Joe's", "Target", "Save A Lot", "Sams", "Natural Grocers", "Costco", "Lowe's", "El Mercado De Colorado" ],
+                value=["Safeway", "King Sooper", "Sprouts", "Walmart SC", "Walmart NM", "Whole Foods", "Trader Joes", "Target", "Save A Lot", "Sams", "Natural Grocers", "Costco", "Lowes", "El Mercado De Colorado" ],
                 inline=True
             ),
         ], width=6),
@@ -121,7 +121,8 @@ def update_Choropleth(stores, radius):
     # print(gwb.columns)   
     gd = geo_data[geo_data['GEOID20'].isin(blocks)]
     gd = gd.to_crs("epsg:4326")
-    print(type(gd))
+    gd['color'] = 1
+    # print(type(gd))
     # gd = gpd.GeoDataFrame(
     #     gd, geometry=gpd.points_from
     # )

@@ -9,9 +9,10 @@ Arap_outline = gpd.read_file('/Users/jamesswank/Python_Projects/Situational_Awar
 
 
 def get_Choropleth(df, gd, marker_opacity, marker_line_width, marker_line_color, fig=None):
-    print(gd['geometry'])
-    print(gd.columns)
-    print(gd)
+    # print(gd['geometry'])
+    # print(gd.columns)
+    # print(gd)
+    # print(df)
     
     if fig is None:
         fig = go.Figure(
@@ -23,15 +24,16 @@ def get_Choropleth(df, gd, marker_opacity, marker_line_width, marker_line_color,
             geojson=eval(gd['geometry'].to_json()),
             # geojson=gd,
             locations=gd.index,
-            z=gd['Total'],
+            z=gd['color'],
             marker_opacity = marker_opacity,
             marker_line_width = marker_line_width,
             marker_line_color = marker_line_color,
             # customdata=gwb["GEOID20"],
+            showscale=False,
             hoverinfo='z',
-            colorscale='fall',
-            zmax=1000,
-            zmin=500
+            colorscale='blues',
+            zmax=1,
+            zmin=1
         )
     )
     
@@ -46,10 +48,11 @@ def get_Choropleth(df, gd, marker_opacity, marker_line_width, marker_line_color,
                 color='red'
             ),
             customdata=df.Store,
-            showlegend=False,
+            showlegend=True,
             hovertemplate='<br>'.join([
             'Store: %{customdata}',
             ]),
+            name='Grocery Store'
         )
     )
 
@@ -75,7 +78,7 @@ def get_figure(df, gd):
             {
                 "source": Arap_outline["geometry"].__geo_interface__,
                 "type": "line",
-                "color": "red"
+                "color": "blue"
             }
         ]
     
