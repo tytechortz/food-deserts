@@ -102,22 +102,35 @@ app.layout = dbc.Container([
     dcc.Store(id='grocery-stores', storage_type='memory')
 ])
 
-# @app.callback(
-#         Output('pop', 'children'),
-#         Input('poverty', 'value'))
-# def get_pop(buffer):
+@app.callback(
+        Output('pop', 'children'),
+        Input('poverty', 'value'),
+        Input('geo-data', 'data'))
+def get_pop(buffer, gd):
 
+    gd = gpd.read_file(gd)
 
-#     return html.Div([
-#         dbc.Card([
-#             dbc.CardBody(
-#                 [
-#                     html.H4('Population', className='text-center'),
-#                     html.H4('{:,}'.format())
-#                 ]
-#             )
-#         ])
-#     ])
+    print(gd)
+    print(gd.columns)
+    df = gd[['TRACTCE20', 'GEOID20','Total']]
+    print(df)
+    df2 = gd.groupby("TRACTCE20")['Total'].sum()
+    print(df2)
+    pop = df2.sum()
+    # df = gd.groupby('TRACTCE20')['Total'].sum()
+    # print(df)
+    # pop = gd['E_TOTPOP'].sum()
+
+    return html.Div([
+        dbc.Card([
+            dbc.CardBody(
+                [
+                    html.H4('Population', className='text-center'),
+                    html.H4('{:,}'.format(pop))
+                ]
+            )
+        ])
+    ])
 
 @app.callback(
     Output("geo-data", 'data'),
@@ -158,6 +171,7 @@ def get_geo_data(radius, poverty, stores):
     #     gd, geometry=gpd.points_from
     # )
     gd = gd[gd['pct_pov'] > poverty]
+    # print(gd)
 
     return gd.to_json(), df.to_json()
 
@@ -174,7 +188,7 @@ def update_Choropleth(geo_data, grocery_stores):
 
     gd = gpd.read_file(geo_data)
     # buffer = radius * 1000
-    print(df)
+    # print(df)
     # df = get_grocery_stores()
     # df = df[df['Store'].isin(stores)]
     # # print(df.index)
