@@ -68,17 +68,20 @@ app.layout = dbc.Container([
             dcc.Input(
                 id='buffer',
                 type='number',
-                value=.5,
+                value=1.6,
                 step=.1,
                 placeholder='Input radius in km'
             ),
         ], width=2),
         dbc.Col([
-            dcc.Slider(0, 1, value=.5,
+            dcc.Slider(0, .5, value=.1,
                 marks={
                     0: {'label': '0', 'style': {'color': 'white'}},
+                    .1: {'label': '.1', 'style': {'color': 'white'}},
+                    .2: {'label': '.2', 'style': {'color': 'white'}},
+                    .3: {'label': '.3', 'style': {'color': 'white'}},
+                    .4: {'label': '.4', 'style': {'color': 'white'}},
                     .5: {'label': '.5', 'style': {'color': 'white'}},
-                    1: {'label': '1', 'style': {'color': 'white'}},
                 },
                 id = 'poverty',
             ),
@@ -90,19 +93,44 @@ app.layout = dbc.Container([
                 dcc.Graph(id='fd-map', figure=blank_fig(500))),
         ]),
     ]),
+    dbc.Row([
+        dbc.Col([
+            html.Div(id='pop')
+       ]) 
+    ]),
+    dcc.Store(id='geo-data', storage_type='memory'),
+    dcc.Store(id='grocery-stores', storage_type='memory')
 ])
 
+# @app.callback(
+#         Output('pop', 'children'),
+#         Input('poverty', 'value'))
+# def get_pop(buffer):
+
+
+#     return html.Div([
+#         dbc.Card([
+#             dbc.CardBody(
+#                 [
+#                     html.H4('Population', className='text-center'),
+#                     html.H4('{:,}'.format())
+#                 ]
+#             )
+#         ])
+#     ])
+
 @app.callback(
-    Output("fd-map", "figure"),
-    Input("stores", "value"),
+    Output("geo-data", 'data'),
+    Output("grocery-stores", 'data'),
     Input("buffer", "value"),
-    Input("poverty", "value"))
-def update_Choropleth(stores, radius, poverty):
-    buffer = radius * 1000
+    Input("poverty", "value"),
+    Input("stores", "value"))      
+def get_geo_data(radius, poverty, stores):
+    buffer = radius *1000
 
     df = get_grocery_stores()
     df = df[df['Store'].isin(stores)]
-    # print(df.index)
+
     gdf = gpd.GeoDataFrame(
         df, geometry=gpd.points_from_xy(df.X, df.Y), crs="EPSG:4326" 
     )
@@ -129,21 +157,60 @@ def update_Choropleth(stores, radius, poverty):
     # gd = gpd.GeoDataFrame(
     #     gd, geometry=gpd.points_from
     # )
-    gd = gd[gd['pct_pov'] < poverty]
-    print(gd)
+    gd = gd[gd['pct_pov'] > poverty]
+
+    return gd.to_json(), df.to_json()
+
+
+
+
+
+@app.callback(
+    Output("fd-map", "figure"),
+    Input("geo-data", "data"),
+    Input("grocery-stores", "data"))
+def update_Choropleth(geo_data, grocery_stores):
+    df = pd.read_json(grocery_stores)
+
+    gd = gpd.read_file(geo_data)
+    # buffer = radius * 1000
+    print(df)
+    # df = get_grocery_stores()
+    # df = df[df['Store'].isin(stores)]
+    # # print(df.index)
+    # gdf = gpd.GeoDataFrame(
+    #     df, geometry=gpd.points_from_xy(df.X, df.Y), crs="EPSG:4326" 
+    # )
+    
+    # gdf['geometry'] = gdf.geometry.to_crs("epsg:26913")
+    # # print(gdf)
+    # geo_data = get_block_data()
+    # geo_data = geo_data.to_crs("EPSG:26913")
+    # # print(geo_data.columns)
+    # # gwb = gpd.sjoin_nearest(df, geo_data, distance_col="distances")
+    # # gdf = gdf.to_crs({'init': 'epsg:32750'})
+    # gdf['geometry'] = gdf.geometry.buffer(buffer)
+    # # print(gdf)
+    # # print(gwb.distances)
+    # gwb = gpd.overlay(geo_data, gdf, how="difference")
+    # gwb = gwb.to_crs("epsg:4326")
+    # blocks = gwb['GEOID20']
+    # # print(blocks)
+    # # print(gwb.columns)   
+    # gd = geo_data[geo_data['GEOID20'].isin(blocks)]
+    # gd = gd.to_crs("epsg:4326")
+    # gd['color'] = 1
+    # # print(type(gd))
+    # # gd = gpd.GeoDataFrame(
+    # #     gd, geometry=gpd.points_from
+    # # )
+    # gd = gd[gd['pct_pov'] > poverty]
+    # print(gd)
+    # print(gd['pct_pov'].max())
+    # print(gd['pct_pov'].min())
     
 
-
-
-
-
-
     fig = get_figure(df, gd)
-
-
-
-
-
 
 
 
