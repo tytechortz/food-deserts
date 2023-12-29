@@ -96,7 +96,10 @@ app.layout = dbc.Container([
     dbc.Row([
         dbc.Col([
             html.Div(id='pop')
-       ]) 
+       ]),
+       dbc.Col([
+            html.Div(id='poverty-level')
+       ]),
     ]),
     dcc.Store(id='geo-data', storage_type='memory'),
     dcc.Store(id='grocery-stores', storage_type='memory')
@@ -117,9 +120,7 @@ def get_pop(buffer, gd):
     df2 = gd.groupby("TRACTCE20")['Total'].sum()
     print(df2)
     pop = df2.sum()
-    # df = gd.groupby('TRACTCE20')['Total'].sum()
-    # print(df)
-    # pop = gd['E_TOTPOP'].sum()
+    
 
     return html.Div([
         dbc.Card([
@@ -131,6 +132,27 @@ def get_pop(buffer, gd):
             )
         ])
     ])
+
+@app.callback(
+        Output('poverty-level', 'children'),
+        Input('poverty', 'value'))
+def get_poverty_level(poverty):
+
+    pov = poverty
+
+    return html.Div([
+        dbc.Card([
+            dbc.CardBody(
+                [
+                    html.H4('Percentage in Poverty', className='text-center'),
+                    html.H4('{:,}'.format(pov))
+                ]
+            )
+        ])
+    ])
+
+
+
 
 @app.callback(
     Output("geo-data", 'data'),
