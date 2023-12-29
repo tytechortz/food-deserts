@@ -74,11 +74,11 @@ app.layout = dbc.Container([
             ),
         ], width=2),
         dbc.Col([
-            dcc.Slider(0, 2, value=1.6,
+            dcc.Slider(0, 1, value=.5,
                 marks={
                     0: {'label': '0', 'style': {'color': 'white'}},
-                    1.6: {'label': '1.6', 'style': {'color': 'white'}},
-                    2: {'label': '2', 'style': {'color': 'white'}},
+                    .5: {'label': '.5', 'style': {'color': 'white'}},
+                    1: {'label': '1', 'style': {'color': 'white'}},
                 },
                 id = 'radius',
             ),
