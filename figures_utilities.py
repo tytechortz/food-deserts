@@ -9,10 +9,7 @@ Arap_outline = gpd.read_file('/Users/jamesswank/Python_Projects/Situational_Awar
 
 
 def get_Choropleth(df, gd, marker_opacity, marker_line_width, marker_line_color, fig=None):
-    # print(gd['geometry'])
-    # print(gd.columns)
-    # print(gd)
-    # print(df)
+    
     
     if fig is None:
         fig = go.Figure(
@@ -58,19 +55,10 @@ def get_Choropleth(df, gd, marker_opacity, marker_line_width, marker_line_color,
 
     return fig
 
-# def get_map(df, ):
-
-#     fig = go.Figure()
-  
-
-    
-
-#     return fig
 
 
 def get_figure(df, gd):
 
-    # print(df)
     fig = get_Choropleth(df, gd, marker_opacity=1,
                          marker_line_width=.1, marker_line_color='#6666cc')
     
@@ -92,10 +80,6 @@ def get_figure(df, gd):
                             uirevision='constant'),
     
                         
-    
-    # if len(geo_tracts_highlights) != 0:
-    #     fig = get_Choropleth(df, geo_tracts_highlights, marker_opacity=1.0,
-    #                          marker_line_width=3, marker_line_color='aqua', fig=fig)
     
 
     return fig

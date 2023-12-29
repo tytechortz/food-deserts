@@ -16,9 +16,6 @@ from utilities import (
 )
 
 
-
-
-
 app = Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.DARKLY])
 
 header = html.Div("Arapahoe County Food Deserts", className="h2 p-2 text-white bg-primary text-center")
@@ -113,12 +110,12 @@ def get_pop(buffer, gd):
 
     gd = gpd.read_file(gd)
 
-    print(gd)
-    print(gd.columns)
+    # print(gd)
+    # print(gd.columns)
     df = gd[['TRACTCE20', 'GEOID20','Total']]
-    print(df)
+    # print(df)
     df2 = gd.groupby("TRACTCE20")['Total'].sum()
-    print(df2)
+    # print(df2)
     pop = df2.sum()
     
 
@@ -153,7 +150,6 @@ def get_poverty_level(poverty):
 
 
 
-
 @app.callback(
     Output("geo-data", 'data'),
     Output("grocery-stores", 'data'),
@@ -174,30 +170,21 @@ def get_geo_data(radius, poverty, stores):
     # print(gdf)
     geo_data = get_block_data()
     geo_data = geo_data.to_crs("EPSG:26913")
-    # print(geo_data.columns)
-    # gwb = gpd.sjoin_nearest(df, geo_data, distance_col="distances")
-    # gdf = gdf.to_crs({'init': 'epsg:32750'})
+    
     gdf['geometry'] = gdf.geometry.buffer(buffer)
-    # print(gdf)
-    # print(gwb.distances)
+    
     gwb = gpd.overlay(geo_data, gdf, how="difference")
     gwb = gwb.to_crs("epsg:4326")
     blocks = gwb['GEOID20']
-    # print(blocks)
-    # print(gwb.columns)   
+      
     gd = geo_data[geo_data['GEOID20'].isin(blocks)]
     gd = gd.to_crs("epsg:4326")
     gd['color'] = 1
-    # print(type(gd))
-    # gd = gpd.GeoDataFrame(
-    #     gd, geometry=gpd.points_from
-    # )
+    
     gd = gd[gd['pct_pov'] > poverty]
-    # print(gd)
+    
 
     return gd.to_json(), df.to_json()
-
-
 
 
 
@@ -209,46 +196,8 @@ def update_Choropleth(geo_data, grocery_stores):
     df = pd.read_json(grocery_stores)
 
     gd = gpd.read_file(geo_data)
-    # buffer = radius * 1000
-    # print(df)
-    # df = get_grocery_stores()
-    # df = df[df['Store'].isin(stores)]
-    # # print(df.index)
-    # gdf = gpd.GeoDataFrame(
-    #     df, geometry=gpd.points_from_xy(df.X, df.Y), crs="EPSG:4326" 
-    # )
-    
-    # gdf['geometry'] = gdf.geometry.to_crs("epsg:26913")
-    # # print(gdf)
-    # geo_data = get_block_data()
-    # geo_data = geo_data.to_crs("EPSG:26913")
-    # # print(geo_data.columns)
-    # # gwb = gpd.sjoin_nearest(df, geo_data, distance_col="distances")
-    # # gdf = gdf.to_crs({'init': 'epsg:32750'})
-    # gdf['geometry'] = gdf.geometry.buffer(buffer)
-    # # print(gdf)
-    # # print(gwb.distances)
-    # gwb = gpd.overlay(geo_data, gdf, how="difference")
-    # gwb = gwb.to_crs("epsg:4326")
-    # blocks = gwb['GEOID20']
-    # # print(blocks)
-    # # print(gwb.columns)   
-    # gd = geo_data[geo_data['GEOID20'].isin(blocks)]
-    # gd = gd.to_crs("epsg:4326")
-    # gd['color'] = 1
-    # # print(type(gd))
-    # # gd = gpd.GeoDataFrame(
-    # #     gd, geometry=gpd.points_from
-    # # )
-    # gd = gd[gd['pct_pov'] > poverty]
-    # print(gd)
-    # print(gd['pct_pov'].max())
-    # print(gd['pct_pov'].min())
-    
-
+   
     fig = get_figure(df, gd)
-
-
 
     return fig
 
