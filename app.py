@@ -71,16 +71,18 @@ app.layout = dbc.Container([
                 value=.5,
                 step=.1,
                 placeholder='Input radius in km'
-            )
-        #     dcc.Slider(0, 2, value=1.6,
-        #         marks={
-        #             0: {'label': '0', 'style': {'color': 'white'}},
-        #             1.6: {'label': '1.6', 'style': {'color': 'white'}},
-        #             2: {'label': '2', 'style': {'color': 'white'}},
-        #         },
-        #         id = 'radius',
-        #     ),
+            ),
         ], width=2),
+        dbc.Col([
+            dcc.Slider(0, 2, value=1.6,
+                marks={
+                    0: {'label': '0', 'style': {'color': 'white'}},
+                    1.6: {'label': '1.6', 'style': {'color': 'white'}},
+                    2: {'label': '2', 'style': {'color': 'white'}},
+                },
+                id = 'radius',
+            ),
+        ], width=4),
     ]),
     dbc.Row([
         html.Div([
